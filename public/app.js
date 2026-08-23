@@ -1981,6 +1981,7 @@ function openEventForm(event = {}) {
   $("#eventDateUndecided").checked = isDateUndecided(event);
   $("#eventHidden").checked = event.is_public === false;
   $("#eventRegistrationClosed").checked = isRegistrationClosed(event);
+  $("#eventAutoApprove").checked = event.auto_approve === true;
   $("#eventDate").value = isDateUndecided(event) ? "" : event.event_date ?? toDateInput(appState.currentDate);
   $("#eventStartTime").value = event.start_time?.slice(0, 5) ?? "";
   $("#eventEndTime").value = event.end_time?.slice(0, 5) ?? "";
@@ -2160,6 +2161,7 @@ async function handleEventSubmit(event) {
     seats_total: Number($("#eventSeats").value),
     description: $("#eventDescription").value.trim(),
     is_registration_closed: $("#eventRegistrationClosed").checked,
+    auto_approve: $("#eventAutoApprove").checked,
     is_public: !$("#eventHidden").checked
   };
   if (!id && appState.session?.user?.id) {
@@ -2566,6 +2568,7 @@ function copiedEventPayload(sourceEvent, variant) {
     approved_players_count: 0,
     description: sourceEvent.description ?? "",
     is_registration_closed: sourceEvent.is_registration_closed === true,
+    auto_approve: sourceEvent.auto_approve === true,
     is_public: sourceEvent.is_public !== false
   };
 }
@@ -3717,6 +3720,7 @@ function eventLabelMarkup(event) {
   if (isDateUndecided(event)) labels.push('<span class="event-label undecided">日期未定</span>');
   if (isHiddenEvent(event)) labels.push('<span class="event-label hidden-event">本團隱藏</span>');
   if (isRegistrationClosed(event)) labels.push('<span class="event-label registration-closed">關閉報名</span>');
+  if (event?.auto_approve === true) labels.push('<span class="event-label auto-approve">免審核</span>');
   return labels.length ? `<span class="event-labels">${labels.join("")}</span>` : "";
 }
 

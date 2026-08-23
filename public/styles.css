@@ -917,6 +917,12 @@ textarea:focus {
   color: #991b1b;
 }
 
+.event-label.auto-approve {
+  border-color: #bbf7d0;
+  background: #f0fdf4;
+  color: #166534;
+}
+
 .pill {
   display: inline-flex;
   align-items: center;
